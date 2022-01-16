@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./editor.css";
 import { video } from "@cloudinary/url-gen/qualifiers/source";
-// import { AdvancedVideo } from "@cloudinary/react";
+import { AdvancedVideo } from "@cloudinary/react";
 
-// import { Cloudinary } from "@cloudinary/url-gen";
-// import { fill } from "@cloudinary/url-gen/actions/resize";
-// import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
-// import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
-// import { Gravity } from "@cloudinary/url-gen/qualifiers";
-// import { AutoFocus } from "@cloudinary/url-gen/qualifiers/autoFocus";
+import { Cloudinary } from "@cloudinary/url-gen";
+import { fill } from "@cloudinary/url-gen/actions/resize";
+import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
+import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
+import { Gravity } from "@cloudinary/url-gen/qualifiers";
+import { AutoFocus } from "@cloudinary/url-gen/qualifiers/autoFocus";
 
 // import Transformation from "@cloudinary/url-gen/backwards/transformation";
 // import { Transformation } from "@cloudinary/url-gen";
@@ -16,17 +16,24 @@ import { video } from "@cloudinary/url-gen/qualifiers/source";
 // import { Position } from "@cloudinary/url-gen/qualifiers/position";
 // import { compass } from "@cloudinary/url-gen/qualifiers/gravity";
 // import { upload } from "@testing-library/user-event/dist/upload";
+function handleErrors(response) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
 
 const VideoEdit = () => {
   const [file, setFile] = useState(null);
-  const [videoSrc, setVideoSrc] = useState([]);
+  const [videoSrc, setVideoSrc] = useState("");
+
   const [loading, setLoading] = useState(false);
 
-  // const cld = new Cloudinary({
-  //   cloud: {
-  //     cloudName: "demo",
-  //   },
-  // });
+  const cld = new Cloudinary({
+    cloud: {
+      cloudName: "pueneh",
+    },
+  });
 
   const handleEventChange = (e) => {
     const read = e.target.files[0];
@@ -42,25 +49,27 @@ const VideoEdit = () => {
       body: formData,
     })
       .then((res) => res.json())
-      .then((res) => console.log(res))
+      // .then((res) => console.log(res))
       .then((res) => {
-        setVideoSrc((videoSrc) => [...videoSrc, res.secure_url]);
+        console.log(res);
+        setVideoSrc(res.public_id);
+
         setLoading(false);
       })
-      .catch((error) => console.log(error));
+      .then(handleErrors);
   };
-  // const myVideo = cld.video("docs/walking_talking");
+  const myVideo = cld.video(videoSrc);
+  // console.log(myVideo);
 
   // Apply the transformation.
-  // myVideo
-  //   .resize(
-  //     fill()
-  //       .width(150)
-  //       .height(150)
-  //       .gravity(
-  //         Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
-  //       )
-  //   )
+  myVideo.resize(
+    fill()
+      .width(150)
+      .height(150)
+      .gravity(
+        Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
+      )
+  );
   //   // Crop the video, focusing on the faces.
 
   //   .roundCorners(byRadius(20)); // R
@@ -81,25 +90,16 @@ const VideoEdit = () => {
           <button onClick={handleSubmit}>Upload</button>
           <div>
             {loading && <p>Loading...</p>}
-            {videoSrc.map((videoplay) => {
-              // <video controls src={video}></video>;
-              <video
-                id="demo-player"
+            {videoSrc ? (
+              <AdvancedVideo
+                // src={}
+                cldVid={cld.video(videoSrc)}
                 controls
-                autoplay
-                class="cld-video-player"
-                data-cld-public-id={videoplay}></video>;
-            })}
+              />
+            ) : (
+              <div></div>
+            )}
           </div>
-          {/* <AdvancedVideo cldVid={myVideo} controls></AdvancedVideo> */}
-          {/* <Video publicId={myVideos}>
-            <Transformation height="200" width="300" crop="fill" />
-            <Transformation flags="splice" overlay="video:dog" />
-            <Transformation height="200" width="300" crop="fill" />
-            <Transformation flags="layer_apply" />
-          </Video> */}
-
-          {/* <img src={logo} className={"user-img"} /> */}
         </div>
       </div>
     </div>
