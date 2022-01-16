@@ -1,57 +1,69 @@
 import React, { useState } from "react";
 import "./editor.css";
-import { AdvancedVideo } from "@cloudinary/react";
-import { Cloudinary } from "@cloudinary/url-gen";
-import { fill } from "@cloudinary/url-gen/actions/resize";
-import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
-import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
-import { Gravity } from "@cloudinary/url-gen/qualifiers";
-import { AutoFocus } from "@cloudinary/url-gen/qualifiers/autoFocus";
+import { video } from "@cloudinary/url-gen/qualifiers/source";
+// import { AdvancedVideo } from "@cloudinary/react";
+
+// import { Cloudinary } from "@cloudinary/url-gen";
+// import { fill } from "@cloudinary/url-gen/actions/resize";
+// import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
+// import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
+// import { Gravity } from "@cloudinary/url-gen/qualifiers";
+// import { AutoFocus } from "@cloudinary/url-gen/qualifiers/autoFocus";
+
+// import Transformation from "@cloudinary/url-gen/backwards/transformation";
+// import { Transformation } from "@cloudinary/url-gen";
+
+// import { Position } from "@cloudinary/url-gen/qualifiers/position";
+// import { compass } from "@cloudinary/url-gen/qualifiers/gravity";
+// import { upload } from "@testing-library/user-event/dist/upload";
 
 const VideoEdit = () => {
-  const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
-  const [isSelected, setIsSelected] = useState(false);
+  const [file, setFile] = useState(null);
+  const [videoSrc, setVideoSrc] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const cld = new Cloudinary({
-    cloud: {
-      cloudName: "demo",
-    },
-  });
-  const myVideo = cld.video("docs/walking_talking");
+  // const cld = new Cloudinary({
+  //   cloud: {
+  //     cloudName: "demo",
+  //   },
+  // });
 
-  // Apply the transformation.
-  myVideo
-    .resize(
-      fill()
-        .width(150)
-        .height(150)
-        .gravity(
-          Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
-        )
-    ) // Crop the video, focusing on the faces.
-    .roundCorners(byRadius(20)); // R
-  const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
-    setIsSelected(true);
+  const handleEventChange = (e) => {
+    const read = e.target.files[0];
+    setFile(read);
   };
-  const handleSubmission = () => {
+  const handleSubmit = () => {
     const formData = new FormData();
-
-    formData.append("File", selectedFile);
-
-    fetch("https://api.cloudinary.com/v1_1/${cloudName}/upload", {
+    formData.append("file", file);
+    formData.append("upload_preset", "oqiie6dy");
+    setLoading(true);
+    fetch("https://api.cloudinary.com/v1_1/pueneh/upload", {
       method: "POST",
       body: formData,
     })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log("Success:", result);
+      .then((res) => res.json())
+      .then((res) => console.log(res))
+      .then((res) => {
+        setVideoSrc((videoSrc) => [...videoSrc, res.secure_url]);
+        setLoading(false);
       })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+      .catch((error) => console.log(error));
   };
+  // const myVideo = cld.video("docs/walking_talking");
+
+  // Apply the transformation.
+  // myVideo
+  //   .resize(
+  //     fill()
+  //       .width(150)
+  //       .height(150)
+  //       .gravity(
+  //         Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
+  //       )
+  //   )
+  //   // Crop the video, focusing on the faces.
+
+  //   .roundCorners(byRadius(20)); // R
 
   return (
     <div className={"header-banner"}>
@@ -64,29 +76,29 @@ const VideoEdit = () => {
           </p>
         </section>
         <div className={"user-img-wrapper"}>
-          <AdvancedVideo
-            cldVid={myVideo}
-            controls
-            // onPlay={playFunction}
-            // onEnded={endFunction}
-          />
-          <input type="file" name="file" onChange={changeHandler} />
-          {isSelected ? (
-            <div>
-              <p>Filename: {selectedFile.name}</p>
-              <p>Filetype: {selectedFile.type}</p>
-              <p>Size in bytes: {selectedFile.size}</p>
-              <p>
-                lastModifiedDate:{" "}
-                {selectedFile.lastModifiedDate.toLocaleDateString()}
-              </p>
-            </div>
-          ) : (
-            <p>Select a file to show details</p>
-          )}
+          <h1>Upload your videos here</h1>
+          <input type="file" name="file" id="" onChange={handleEventChange} />
+          <button onClick={handleSubmit}>Upload</button>
           <div>
-            <button onClick={handleSubmission}>Submit</button>
+            {loading && <p>Loading...</p>}
+            {videoSrc.map((videoplaying) => {
+              // <video controls src={video}></video>;
+              <video
+                id="demo-player"
+                controls
+                autoplay
+                class="cld-video-player"
+                data-cld-public-id={videoplaying}></video>;
+            })}
           </div>
+          {/* <AdvancedVideo cldVid={myVideo} controls></AdvancedVideo> */}
+          {/* <Video publicId={myVideos}>
+            <Transformation height="200" width="300" crop="fill" />
+            <Transformation flags="splice" overlay="video:dog" />
+            <Transformation height="200" width="300" crop="fill" />
+            <Transformation flags="layer_apply" />
+          </Video> */}
+
           {/* <img src={logo} className={"user-img"} /> */}
         </div>
       </div>
