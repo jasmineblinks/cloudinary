@@ -81,14 +81,14 @@ const VideoEdit = () => {
           <button onClick={handleSubmit}>Upload</button>
           <div>
             {loading && <p>Loading...</p>}
-            {videoSrc.map((videoplaying) => {
+            {videoSrc.map((videoplay) => {
               // <video controls src={video}></video>;
               <video
                 id="demo-player"
                 controls
                 autoplay
                 class="cld-video-player"
-                data-cld-public-id={videoplaying}></video>;
+                data-cld-public-id={videoplay}></video>;
             })}
           </div>
           {/* <AdvancedVideo cldVid={myVideo} controls></AdvancedVideo> */}
