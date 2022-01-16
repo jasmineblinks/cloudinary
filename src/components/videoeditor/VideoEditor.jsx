@@ -62,6 +62,7 @@ const VideoEdit = () => {
   // console.log(myVideo);
 
   // Apply the transformation.
+
   myVideo.resize(
     fill()
       .width(150)
