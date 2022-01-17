@@ -70,19 +70,19 @@ const VideoEdit = () => {
       })
       .then(handleErrors);
   };
-  const myVideo = cld.video(transformState);
-  console.log(myVideo);
+  // const myVideo = cld.video(transformState);
+  // console.log(myVideo);
 
-  // Apply the transformation.
+  // // Apply the transformation.
 
-  myVideo.resize(
-    fill(transformState.fill)
-      .width(transformState.width)
-      .height(transformState.height)
-    // .gravity(
-    //   Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
-    // )
-  );
+  // myVideo.resize(
+  //   fill(transformState.fill)
+  //     .width(transformState.width)
+  //     .height(transformState.height)
+  //   // .gravity(
+  //   //   Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
+  //   // )
+  // );
   // Crop the video, focusing on the faces.
 
   // .roundCorners(byRadius(20)); // R
@@ -96,6 +96,40 @@ const VideoEdit = () => {
             If you find it difficult uploading videos, worry no more. Using our
             app you can easily upload, edit videos to cloudinary.
           </p>
+          <div>
+            <label htmlFor="">
+              fill
+              <input
+                onChange={onChange}
+                type="text"
+                value={transformState.fill}
+                name="fill"
+              />
+            </label>
+            <label htmlFor="">
+              width
+              <input
+                onChange={onChange}
+                type="text"
+                value={transformState.width}
+                name="width"
+              />
+            </label>
+            <label htmlFor="">
+              height
+              <input
+                onChange={onChange}
+                type="text"
+                value={transformState.height}
+                name="height"
+              />
+            </label>
+            <div style={{ backGroundColor: "blue" }}>
+              <p>fill:{transformState.fill}</p>
+              <p>width:{transformState.width}</p>
+              <p>height:{transformState.height}</p>
+            </div>
+          </div>
         </section>
         <div className={"user-img-wrapper"}>
           <h1>Upload your videos here</h1>
@@ -106,50 +140,18 @@ const VideoEdit = () => {
             {videoSrc ? (
               <AdvancedVideo
                 // src={}
-                cldVid={
-                  cld.video(videoSrc)
-                  // .fill(transformState.fill)
-                  // .width(transformState.width)
-                  // .height(transformState.height)
-                }
+                cldVid={cld
+                  .video(videoSrc)
+                  .fill(transformState.fill)
+                  .width(transformState.width)
+                  .height(transformState.height)}
                 controls
               />
             ) : (
               <div></div>
             )}
           </div>
-          <label htmlFor="">
-            fill
-            <input
-              onChange={onChange}
-              type="text"
-              value={transformState.fill}
-              name="fill"
-            />
-          </label>
-          <label htmlFor="">
-            width
-            <input
-              onChange={onChange}
-              type="text"
-              value={transformState.width}
-              name="width"
-            />
-          </label>
-          <label htmlFor="">
-            height
-            <input
-              onChange={onChange}
-              type="text"
-              value={transformState.height}
-              name="height"
-            />
-          </label>
-          <div style={{ backGroundColor: "blue" }}>
-            <p>fill:{transformState.fill}</p>
-            <p>width:{transformState.width}</p>
-            <p>height:{transformState.height}</p>
-          </div>
+
           {/* <button onClick={() => myVideo}>Transform</button> */}
         </div>
       </div>
