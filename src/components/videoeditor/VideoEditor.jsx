@@ -28,12 +28,18 @@ const VideoEdit = () => {
   const [file, setFile] = useState(null);
   const [videoSrc, setVideoSrc] = useState("");
   const [transformState, setTransformState] = useState({
-    fill: 60,
+    // fill: 60,
     width: 60,
     height: 60,
   });
+  const [cldCloudName, setCldCloudName] = useState("");
 
   const [loading, setLoading] = useState(false);
+
+  const handleCloudName = (e) => {
+    setCldCloudName(e.target.value);
+  };
+
   const onChange = (e) => {
     setTransformState({
       ...transformState,
@@ -56,7 +62,7 @@ const VideoEdit = () => {
     formData.append("file", file);
     formData.append("upload_preset", "oqiie6dy");
     setLoading(true);
-    fetch("https://api.cloudinary.com/v1_1/pueneh/upload", {
+    fetch(`https://api.cloudinary.com/v1_1/${cldCloudName}/upload`, {
       method: "POST",
       body: formData,
     })
@@ -65,6 +71,11 @@ const VideoEdit = () => {
       .then((res) => {
         console.log(res);
         setVideoSrc(res.public_id);
+        setTransformState((prev) => ({
+          ...prev,
+          height: res.height,
+          width: res.width,
+        }));
 
         setLoading(false);
       })
@@ -97,7 +108,18 @@ const VideoEdit = () => {
             app you can easily upload, edit videos to cloudinary.
           </p>
           <div>
-            <label htmlFor="">
+            <h3>Enter your cloud name</h3>
+            <label>
+              Cloud Name:
+              <input
+                onChange={handleCloudName}
+                type="text"
+                value={cldCloudName}
+                name="cloudname"
+              />
+            </label>
+
+            {/* <label htmlFor="">
               fill
               <input
                 onChange={onChange}
@@ -105,7 +127,7 @@ const VideoEdit = () => {
                 value={transformState.fill}
                 name="fill"
               />
-            </label>
+            </label> */}
             <label htmlFor="">
               width
               <input
@@ -125,7 +147,7 @@ const VideoEdit = () => {
               />
             </label>
             <div style={{ backGroundColor: "blue" }}>
-              <p>fill:{transformState.fill}</p>
+              {/* <p>fill:{transformState.fill}</p> */}
               <p>width:{transformState.width}</p>
               <p>height:{transformState.height}</p>
             </div>
@@ -134,17 +156,22 @@ const VideoEdit = () => {
         <div className={"user-img-wrapper"}>
           <h1>Upload your videos here</h1>
           <input type="file" name="file" id="" onChange={handleEventChange} />
-          <button onClick={handleSubmit}>Upload</button>
+          <button onClick={handleSubmit} disabled={!cldCloudName}>
+            Upload
+          </button>
           <div>
             {loading && <p>Loading...</p>}
             {videoSrc ? (
               <AdvancedVideo
                 // src={}
-                cldVid={cld
-                  .video(videoSrc)
-                  .fill(transformState.fill)
-                  .width(transformState.width)
-                  .height(transformState.height)}
+                cldVid={cld.video(videoSrc).resize(
+                  fill(transformState.fill)
+                    .width(transformState.width)
+                    .height(transformState.height)
+                  // .gravity(
+                  //   Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
+                  // )
+                )}
                 controls
               />
             ) : (
