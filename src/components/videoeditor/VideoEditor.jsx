@@ -58,8 +58,10 @@ const VideoEdit = () => {
       })
       .then(handleErrors);
   };
-  const myVideo = cld.video(videoSrc);
-  // console.log(myVideo);
+  const myVideo = cld.video(
+    "https://res.cloudinary.com/pueneh/video/upload/v1642378851/cquzrh5cgqjk3ecc5eqa.mp4"
+  );
+  console.log(myVideo);
 
   // Apply the transformation.
 
@@ -70,6 +72,7 @@ const VideoEdit = () => {
       .gravity(
         Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
       )
+      .roundCorners(byRadius(20))
   );
   //   // Crop the video, focusing on the faces.
 
@@ -101,6 +104,7 @@ const VideoEdit = () => {
               <div></div>
             )}
           </div>
+          <button onClick={() => myVideo}>Transform</button>
         </div>
       </div>
     </div>
