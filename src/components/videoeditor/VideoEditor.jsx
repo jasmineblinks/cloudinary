@@ -9,6 +9,7 @@ import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
 import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
 import { Gravity } from "@cloudinary/url-gen/qualifiers";
 import { AutoFocus } from "@cloudinary/url-gen/qualifiers/autoFocus";
+import { transform } from "lodash";
 
 // import Transformation from "@cloudinary/url-gen/backwards/transformation";
 // import { Transformation } from "@cloudinary/url-gen";
@@ -26,8 +27,19 @@ function handleErrors(response) {
 const VideoEdit = () => {
   const [file, setFile] = useState(null);
   const [videoSrc, setVideoSrc] = useState("");
+  const [transformState, setTransformState] = useState({
+    fill: 60,
+    width: 60,
+    height: 60,
+  });
 
   const [loading, setLoading] = useState(false);
+  const onChange = (e) => {
+    setTransformState({
+      ...transformState,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const cld = new Cloudinary({
     cloud: {
@@ -58,25 +70,22 @@ const VideoEdit = () => {
       })
       .then(handleErrors);
   };
-  const myVideo = cld.video(
-    "https://res.cloudinary.com/pueneh/video/upload/v1642378851/cquzrh5cgqjk3ecc5eqa.mp4"
-  );
+  const myVideo = cld.video(transformState);
   console.log(myVideo);
 
   // Apply the transformation.
 
   myVideo.resize(
-    fill()
-      .width(150)
-      .height(150)
-      .gravity(
-        Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
-      )
-      .roundCorners(byRadius(20))
+    fill(transformState.fill)
+      .width(transformState.width)
+      .height(transformState.height)
+    // .gravity(
+    //   Gravity.autoGravity().autoFocus(AutoFocus.focusOn(FocusOn.faces()))
+    // )
   );
-  //   // Crop the video, focusing on the faces.
+  // Crop the video, focusing on the faces.
 
-  //   .roundCorners(byRadius(20)); // R
+  // .roundCorners(byRadius(20)); // R
 
   return (
     <div className={"header-banner"}>
@@ -97,14 +106,51 @@ const VideoEdit = () => {
             {videoSrc ? (
               <AdvancedVideo
                 // src={}
-                cldVid={cld.video(videoSrc)}
+                cldVid={
+                  cld.video(videoSrc)
+                  // .fill(transformState.fill)
+                  // .width(transformState.width)
+                  // .height(transformState.height)
+                }
                 controls
               />
             ) : (
               <div></div>
             )}
           </div>
-          <button onClick={() => myVideo}>Transform</button>
+          <label htmlFor="">
+            fill
+            <input
+              onChange={onChange}
+              type="text"
+              value={transformState.fill}
+              name="fill"
+            />
+          </label>
+          <label htmlFor="">
+            width
+            <input
+              onChange={onChange}
+              type="text"
+              value={transformState.width}
+              name="width"
+            />
+          </label>
+          <label htmlFor="">
+            height
+            <input
+              onChange={onChange}
+              type="text"
+              value={transformState.height}
+              name="height"
+            />
+          </label>
+          <div style={{ backGroundColor: "blue" }}>
+            <p>fill:{transformState.fill}</p>
+            <p>width:{transformState.width}</p>
+            <p>height:{transformState.height}</p>
+          </div>
+          {/* <button onClick={() => myVideo}>Transform</button> */}
         </div>
       </div>
     </div>
