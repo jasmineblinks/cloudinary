@@ -35,9 +35,13 @@ const VideoEdit = () => {
   const [cldCloudName, setCldCloudName] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const [preset, setPreset] = useState("");
 
   const handleCloudName = (e) => {
     setCldCloudName(e.target.value);
+  };
+  const handlePresetName = (e) => {
+    setPreset(e.target.value);
   };
 
   const onChange = (e) => {
@@ -60,7 +64,7 @@ const VideoEdit = () => {
   const handleSubmit = () => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "oqiie6dy");
+    formData.append("upload_preset", preset);
     setLoading(true);
     fetch(`https://api.cloudinary.com/v1_1/${cldCloudName}/upload`, {
       method: "POST",
@@ -119,6 +123,15 @@ const VideoEdit = () => {
               />
             </label>
 
+            <label>
+              Enter upload preset:
+              <input
+                onChange={handlePresetName}
+                type="text"
+                value={preset}
+                name="preset"
+              />
+            </label>
             {/* <label htmlFor="">
               fill
               <input
@@ -156,7 +169,7 @@ const VideoEdit = () => {
         <div className={"user-img-wrapper"}>
           <h1>Upload your videos here</h1>
           <input type="file" name="file" id="" onChange={handleEventChange} />
-          <button onClick={handleSubmit} disabled={!cldCloudName}>
+          <button onClick={handleSubmit} disabled={(!cldCloudName, !preset)}>
             Upload
           </button>
           <div>
