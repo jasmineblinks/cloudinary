@@ -65,7 +65,7 @@ body {
   margin-bottom: 10px;
 }
 .upload button {
-  margin: auto;
+  margin: auto auto 10px auto;
   display: block;
   background-color: #0000ff;
   color: #fff;
