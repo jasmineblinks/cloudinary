@@ -53,7 +53,31 @@ body {
 .nav-bar a:hover {
   color: #071b37;
 }
-
+.upload-video {
+  margin: auto;
+  text-align: center;
+}
+.upload input {
+  margin: 0 auto;
+  border: 2px solid #0000ff;
+  padding: 5px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.upload button {
+  margin: auto;
+  display: block;
+  background-color: #0000ff;
+  color: #fff;
+  border: none;
+  padding: 15px;
+  width: 100px;
+  border-radius: 5px;
+}
+.upload button:disabled {
+  background-color: #333;
+  color: #fff;
+}
 .banner-content-wrapper {
   display: flex;
   width: 100%;

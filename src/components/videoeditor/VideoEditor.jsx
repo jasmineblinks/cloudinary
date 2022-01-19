@@ -167,11 +167,23 @@ const VideoEdit = () => {
           </div>
         </section>
         <div className={"user-img-wrapper"}>
-          <h1>Upload your videos here</h1>
-          <input type="file" name="file" id="" onChange={handleEventChange} />
-          <button onClick={handleSubmit} disabled={(!cldCloudName, !preset)}>
-            Upload
-          </button>
+          <div className={"upload-video"}>
+            <h1>Upload Your Videos Here</h1>
+            <div className={"upload"}>
+              <input
+                type="file"
+                name="file"
+                id=""
+                onChange={handleEventChange}
+              />
+              <button
+                onClick={handleSubmit}
+                disabled={(!cldCloudName, !preset)}>
+                Upload
+              </button>
+            </div>
+          </div>
+
           <div>
             {loading && <p>Loading...</p>}
             {videoSrc ? (
