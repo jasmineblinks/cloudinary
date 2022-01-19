@@ -161,11 +161,10 @@ const VideoEdit = () => {
               />
             </div>
           </div>
-          <div className={"banner-text"}>
-            {/* <p>fill:{transformState.fill}</p> */}
+          {/* <div className={"banner-text"}>           
             <p>width:{transformState.width}</p>
             <p>height:{transformState.height}</p>
-          </div>
+          </div> */}
         </section>
         <div className={"user-img-wrapper"}>
           <div className={"upload-video"}>
