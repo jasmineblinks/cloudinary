@@ -110,28 +110,31 @@ const VideoEdit = () => {
           <p className={"about-me"}>
             If you find it difficult uploading videos, worry no more. Using our
             app you can easily upload, edit videos to cloudinary.
+            <br />
+            <span style={{ color: "red", fontWeight: "bold" }}> Note:</span>
+            Kindly input your cloud name and upload preset before uploading your
+            video.
           </p>
-          <div>
-            <h3>Enter your cloud name</h3>
-            <label>
-              Cloud Name:
+
+          <div className={"banner-input"}>
+            <div>
+              <label htmlFor="">Cloud Name:</label>
               <input
                 onChange={handleCloudName}
                 type="text"
                 value={cldCloudName}
                 name="cloudname"
               />
-            </label>
 
-            <label>
-              Enter upload preset:
+              <label htmlFor="">Upload Preset:</label>
               <input
                 onChange={handlePresetName}
                 type="text"
                 value={preset}
                 name="preset"
               />
-            </label>
+            </div>
+
             {/* <label htmlFor="">
               fill
               <input
@@ -141,29 +144,27 @@ const VideoEdit = () => {
                 name="fill"
               />
             </label> */}
-            <label htmlFor="">
-              width
+            <div>
+              <label htmlFor="">width:</label>
               <input
                 onChange={onChange}
                 type="text"
                 value={transformState.width}
                 name="width"
               />
-            </label>
-            <label htmlFor="">
-              height
+              <label htmlFor="">height:</label>
               <input
                 onChange={onChange}
                 type="text"
                 value={transformState.height}
                 name="height"
               />
-            </label>
-            <div style={{ backGroundColor: "blue" }}>
-              {/* <p>fill:{transformState.fill}</p> */}
-              <p>width:{transformState.width}</p>
-              <p>height:{transformState.height}</p>
             </div>
+          </div>
+          <div className={"banner-text"}>
+            {/* <p>fill:{transformState.fill}</p> */}
+            <p>width:{transformState.width}</p>
+            <p>height:{transformState.height}</p>
           </div>
         </section>
         <div className={"user-img-wrapper"}>

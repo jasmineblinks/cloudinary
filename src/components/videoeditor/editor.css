@@ -98,7 +98,33 @@ body {
   position: relative;
   z-index: 2;
 }
-
+.banner-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  background-color: #000;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 5px 5px #fff;
+}
+.banner-input input {
+  width: 250px;
+  outline: none;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  margin: 5px;
+}
+.banner-input label {
+  display: block;
+  color: #fff;
+}
+.banner-text {
+  text-align: left;
+  font-size: 18px;
+  color: #fff;
+}
 #title {
   font-size: 5rem;
   line-height: 0.9;
