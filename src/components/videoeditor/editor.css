@@ -266,6 +266,17 @@ body {
     width: 7%;
   }
 }
+.banner-input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto auto auto -3px;
+  flex-direction: column;
+  background-color: #000;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 5px 5px #fff;
+}
 
 @media screen and (min-width: 1px) {
   .contact-me {
@@ -423,12 +434,20 @@ body {
 
 @media screen and (max-width: 670px) {
   #title {
-    font-size: 10vw;
+    font-size: 5vw;
   }
   .about-me {
-    max-width: 70%;
+    max-width: 80%;
+    line-height: 30px;
+    text-align: center;
   }
   .banner-content {
     text-align: center;
+  }
+  .user-img-wrapper {
+    z-index: 1;
+    margin: 2rem auto auto -10px;
+    width: 300px;
+    min-height: 50vh;
   }
 }
