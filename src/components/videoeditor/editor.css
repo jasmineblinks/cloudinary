@@ -223,7 +223,7 @@ body {
   }
   .banner-content-wrapper {
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     z-index: 1;
     flex: 1;
   }
@@ -449,7 +449,7 @@ body {
   .user-img-wrapper {
     z-index: 1;
     margin: 2rem auto auto -10px;
-    width: 400px;
+    width: 350px;
     min-height: 50vh;
   }
 }
